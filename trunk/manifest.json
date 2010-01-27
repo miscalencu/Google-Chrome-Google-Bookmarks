@@ -1,0 +1,21 @@
+{
+	"name": "Google Bookmarks",
+	"description" : "Google Chrome extension that gets bookmrks from Google Bookmarks.",
+	"version": "0.1",
+	"description": "Google Chrome extension that gets bookmrks from Google Bookmarks.",
+	"options_page": "options.htm",
+	"background_page": "background.htm",
+	"browser_action": {
+		"default_icon": "images/icon.png",
+		"default_title": "Google Bookmarks",
+		"popup": "popup.htm"
+	},
+	"icons": {
+		"128": "images/icon_128.png",
+		"48": "images/icon_48.png"
+	},
+	"permissions": [
+	    "tabs",
+	    "http://www.google.com/bookmarks/"
+	]
+}
