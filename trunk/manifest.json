@@ -3,7 +3,7 @@
 	"description" : "Chrome extension that gets bookmarks from Google Bookmarks.",
 	"version": "0.1",
 	"description": "Chrome extension that gets bookmarks from Google Bookmarks.",
-	"options_page": "options.htm",
+	//"options_page": "options.htm",
 	"background_page": "background.htm",
 	"browser_action": {
 		"default_icon": "images/icon.png",
