@@ -48,7 +48,7 @@ function GetBookmarks()
 	{
 	bookmarks = new Array();
 	
-	req.open("GET", "http://www.google.com/bookmarks/?output=xml&num=1000");
+	req.open("GET", "http://www.google.com/bookmarks/?output=xml&amp;num=1000");
 	req.onreadystatechange = fillData;
 	req.send(null);
 	}
