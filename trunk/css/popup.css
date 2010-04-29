@@ -1,0 +1,48 @@
+﻿body 
+	{
+	min-width:320px;
+	min-height: 430px;
+	overflow-x:hidden;
+	overflow-y:hidden;
+	background-color: white;
+	color: black;
+	}
+
+body, table tr td
+	{
+	font-family: Trebuchet MS;
+	font-size: 12px;
+	}
+
+#title
+	{
+	border-bottom: 1px solid #CCCCCC;
+	margin-bottom: 10px;
+	}
+
+#bookmarks
+	{
+	height: 400px;
+	overflow: scroll;
+	}
+
+#bookmarks a:link, #bookmarks a:visited, #bookmarks a:active
+	{
+	color: #666666;
+	text-decoration: underline;
+	}
+
+#bookmarks a:hover
+	{
+	color: #CC0000;
+	text-decoration: none;
+	}
+
+.footer
+	{
+	color: #AAAAAA;
+	font-size: 10px;
+	border-top: 1px solid #AAAAAA;
+	margin-top: 10px;
+	padding-top: 10px;
+	}
