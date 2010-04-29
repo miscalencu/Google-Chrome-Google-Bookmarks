@@ -1,0 +1,71 @@
+body, input
+	{
+	font-family: Trebuchet MS;
+	font-size: 12px;
+	margin: 20px;
+	}
+
+.box
+	{
+	padding: 7px;
+	background-color: #F7F7F7;
+	margin: 5px;
+	clear: both;
+	font-size: 12px;
+	width: 550px;
+	}
+
+h1
+	{
+	border-bottom: 1px solid #CCCCCC;
+	margin-bottom: 16px;
+	}
+
+#power
+	{
+	padding: 10px;
+	font-size: 16px;
+	}
+
+input
+	{
+	margin: 0;
+	padding: 0;
+	}
+
+.spacer
+	{
+	min-width: 50px;
+	display: inline;
+	}
+
+th
+	{
+	color: #0099cc;
+	text-align: left;
+	}
+
+a, a:link, a:active, a:visited
+	{
+	color: #CC0000;
+	text-decoration: underline;
+	}
+
+a:hover
+	{
+	color: #CC0000;
+	text-decoration: none;
+	}
+
+input
+	{
+	font-size: 12px;
+	}
+
+.button
+	{
+	background-color: #0099cc;
+	color: white;
+	font-weight: bold;
+	cursor: pointer;
+	}

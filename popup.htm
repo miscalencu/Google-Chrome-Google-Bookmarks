@@ -1,1 +1,21 @@
-popup
+<html>
+	<head>
+		<link href="/css/popup.css" media="screen" rel="stylesheet" type="text/css" />
+	</head>
+	<body onLoad="Init()">
+		<div id="title">Google Bookmarks</div>
+		<div id="bookmarks"></div>
+		<script language="javascript" type="text/javascript">
+			var currentPage = "popup";
+		</script>		
+		<script language="javascript" type="text/javascript" src="js/core.js"></script>
+		<script language="javascript" type="text/javascript" src="js/popup.js"></script>
+		
+		<script language="javascript" type="text/javascript">
+			function Init()
+				{
+				GetBookmarks();
+				}
+		</script>
+	</body>
+</html>
