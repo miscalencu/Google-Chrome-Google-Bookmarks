@@ -2,6 +2,7 @@ var req = new XMLHttpRequest();
 var bookmarks = new Array();
 var lastReadDate = new Date();
 var noLoggedIn = false;
+var currentLabel = "";
 var timeOut;
 var docXML;
 
@@ -9,6 +10,9 @@ function setDefaultVariables()
 	{
 	if(!localStorage.readTimeout)
 		localStorage.readTimeout = "10";
+		
+	if(!localStorage.lastQuery)
+		localStorage.lastQuery = "";
 	}
 	
 function fillData() 
@@ -123,6 +127,20 @@ function FillBookmarks(label)
 	return ret;
 	}
 	
+function FillUnassignedBookmarks()
+	{
+	var ret = new Array();
+	var total = 0;
+	for(var i = 0; i < bookmarks.length; i++)
+		if(bookmarks[i].labels.length == 0)
+			{
+			ret[total] = bookmarks[i];
+			total ++;
+			}
+	return ret;
+	}
+	
+	
 function updateBadge()
 	{
 	timeOut = null;
@@ -135,7 +153,30 @@ function updateBadge()
 
 function CompareNames(a, b)
 	{
-	return a.title > b.title;
+	var q = document.getElementById("query").value.toLowerCase();
+	if(q == "") // sort by relevance - position of query
+		return a.title.toLowerCase() > b.title.toLowerCase();
+	else
+		{
+		if(a.title.toLowerCase().indexOf(q) != b.title.toLowerCase().indexOf(q))
+			return parseInt(a.title.toLowerCase().indexOf(q)) - parseInt(b.title.toLowerCase().indexOf(q));
+		else
+			return a.title.toLowerCase() > b.title.toLowerCase();	
+		}
+	}
+	
+function CompareValues(a, b)
+	{
+	var q = document.getElementById("query").value.toLowerCase();
+	if(q == "") // sort by relevance - position of query
+		return a.toLowerCase() > b.toLowerCase();
+	else
+		{
+		if(a.toLowerCase().indexOf(q) != b.toLowerCase().indexOf(q))
+			return parseInt(a.toLowerCase().indexOf(q)) - parseInt(b.toLowerCase().indexOf(q));
+		else
+			return a.toLowerCase() > b.toLowerCase();
+		}
 	}
 
 function showUrl(url)

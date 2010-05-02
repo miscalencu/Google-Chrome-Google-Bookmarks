@@ -1,7 +1,7 @@
 ﻿body 
 	{
 	min-width:350px;
-	min-height: 430px;
+	min-height: 380px;
 	overflow-x:hidden;
 	overflow-y:hidden;
 	background-color: white;
@@ -22,8 +22,8 @@ body, table tr td
 
 #bookmarks
 	{
-	height: 400px;
-	overflow: scroll;
+	height: 350px;
+	overflow: auto;
 	}
 
 #bookmarks a:link, #bookmarks a:visited, #bookmarks a:active
@@ -45,4 +45,29 @@ body, table tr td
 	border-top: 1px solid #AAAAAA;
 	margin-top: 10px;
 	padding-top: 10px;
+	}
+	
+#search
+	{
+	border: 1px solid #CCCCCC;
+	margin-bottom: 10px;
+	padding: 2px;
+	background-color: #F7F7F7;	
+	}
+	
+#search img
+	{
+	margin: -3px 0 0 2px;
+	}
+	
+#search input
+	{
+	border: 0;
+	width: 250px;
+	}
+	
+#search input:focus
+	{
+	border:0;
+	outline: none;
 	}
