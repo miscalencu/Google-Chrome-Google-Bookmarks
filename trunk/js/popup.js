@@ -61,4 +61,5 @@ function clearSearch()
 	{
 	document.getElementById("query").value = "";
 	ShowBookmarks(currentLabel);
+	document.getElementById("query").focus();
 	}	

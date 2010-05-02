@@ -5,8 +5,8 @@
 	<body onLoad="Init()">
 		<div id="title"></div>
 		<div id="search">
-			<img align="absmiddle" src="images/search.gif" alt="search" title="search" />
-			<input type="text" id="query" onkeyup="ShowBookmarks(currentLabel)" /> 
+			<label for="query"><img align="absmiddle" src="images/search.gif" alt="search" title="search" /></label>
+			<input type="text" id="query" name="query" onkeyup="ShowBookmarks(currentLabel)" /> 
 			<a href="#" onclick="clearSearch()"><img align="absmiddle" src="images/delete.gif" alt="clear search query" title="clear search query" /></a>
 			<a href="javascript:AddBookmark()"><img src="images/add.gif" alt="add bookmark" title="add bookmark" align="absmiddle" /></a>
 			<a href="#" onclick="showUrl('http://www.google.com/bookmarks')"><img align="absmiddle" src="images/bookmarks.gif" alt="go to Google Bookmarks" title="go to Google Bookmarks" /></a>
