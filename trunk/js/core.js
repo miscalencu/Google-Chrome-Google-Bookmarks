@@ -3,7 +3,6 @@ var bookmarks = new Array();
 var lastReadDate = new Date();
 var noLoggedIn = false;
 var currentLabel = "";
-var timeOut;
 var docXML;
 
 function setDefaultVariables()
@@ -143,12 +142,20 @@ function FillUnassignedBookmarks()
 	
 function updateBadge()
 	{
-	timeOut = null;
-	
-	//chrome.browserAction.setBadgeText({ text: "?" });
-	//chrome.browserAction.setBadgeBackgroundColor({color:[255, 0, 0, 255]});
-	//chrome.browserAction.setTitle({title: "Not logged in!" });
-	//chrome.browserAction.setIcon({path: "images/icon.png" });
+	if(!noLoggedIn)
+		{
+		chrome.browserAction.setBadgeText({ text: String(bookmarks.length) });
+		chrome.browserAction.setBadgeBackgroundColor({color:[0, 153, 204, 255]});
+		chrome.browserAction.setTitle({title: "Total bookmarks: " + bookmarks.length + ".\nLast checked on: " + lastReadDate.toGMTString() });
+		chrome.browserAction.setIcon({path: "images/icon_on.png" });
+		}
+	else
+		{
+		chrome.browserAction.setBadgeText({ text: "?" });
+		chrome.browserAction.setBadgeBackgroundColor({color:[255, 0, 0, 255]});
+		chrome.browserAction.setTitle({title: "Not logged in!" });
+		chrome.browserAction.setIcon({path: "images/icon.png" });
+		}
 	}	
 
 function CompareNames(a, b)
@@ -184,6 +191,12 @@ function showUrl(url)
 	chrome.tabs.create({url: url});
 	}
 
+function showPopup(url)
+	{
+	var add_bookmark_popup = window.open(url, "add_bookmark", "width=620,height=470");
+	//add_bookmark_popup.moveTo(,0);
+	}
+
 function AddBookmark()
 	{
 	chrome.tabs.getSelected(null, fCallback);
@@ -191,11 +204,50 @@ function AddBookmark()
 
 function fCallback(tab) 
 	{
-	//return '(function(){var a=window,b=document,c=encodeURIComponent,d=a.open("http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk="+c(b.location)+"&title="+c(b.title),"bkmk_popup","left="+((a.screenX||a.screenLeft)+10)+",top="+((a.screenY||a.screenTop)+10)+",height=420px,width=550px,resizable=1,alwaysRaised=1");a.setTimeout(function(){d.focus()},300)})();";';
+	//var a=window,b=document,c=encodeURIComponent,d=a.open("http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk="+c(b.location)+"&title="+c(b.title),"bkmk_popup","left="+((a.screenX||a.screenLeft)+10)+",top="+((a.screenY||a.screenTop)+10)+",height=420px,width=550px,resizable=1,alwaysRaised=1");a.setTimeout(function(){d.focus()},300);
 	var a = window;
 	b = document;
 	c = encodeURIComponent;
-	showUrl("http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk=" + c(tab.url) + "&title=" + c(tab.title));
+	showPopup("http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk=" + c(tab.url) + "&title=" + c(tab.title));
 	}
+
+function setStorageData()
+	{
+	//localStorage.bookmarksData = bookmarks;
+	createCookie("bookmarksData", bookmarks, 1);
+	localStorage.lastReadDate = lastReadDate;
+	localStorage.noLoggedIn = noLoggedIn;
+	localStorage.currentLabel = currentLabel;
+	}
+
+function getStorageData()
+	{
+	//bookmarks = localStorage.bookmarksData;
+	bookmarks = readCookie("bookmarksData");
+	lastReadDate = new Date(localStorage.lastReadDate);
+	noLoggedIn = (localStorage.noLoggedIn == "true");
+	currentLabel = localStorage.currentLabel;
+	}
+
+function createCookie(name,value,days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
 
 setDefaultVariables();	
