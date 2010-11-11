@@ -1,10 +1,11 @@
 function Init()
 	{
-	//GetBookmarks();
+	GetBookmarks();
+	setStorageData();
 	}
 	
 function setBadge()
 	{
-	//updateBadge();
-	//timeOut = window.setTimeout("Init();", pollInterval);
+	updateBadge();
+	timeOut = window.setTimeout("Init();", pollInterval);
 	}

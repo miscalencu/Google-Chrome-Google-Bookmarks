@@ -53,8 +53,6 @@ function ShowBookmarks(label)
 
 	currentLabel = label;
 	localStorage.lastQuery = q;
-
-	updateBadge();
 	}
 	
 function clearSearch()

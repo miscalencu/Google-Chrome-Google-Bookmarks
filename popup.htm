@@ -23,7 +23,10 @@
 			function Init()
 				{
 				document.getElementById("query").value = localStorage.lastQuery;
-				GetBookmarks();
+
+				getStorageData();
+				ShowBookmarks("");
+
 				document.getElementById("query").focus();
 				}
 		</script>
