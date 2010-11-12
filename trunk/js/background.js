@@ -1,11 +1,9 @@
 function Init()
 	{
 	GetBookmarks();
-	setStorageData();
 	}
 	
-function setBadge()
+function setBackgroudTimeout()
 	{
-	updateBadge();
 	timeOut = window.setTimeout("Init();", pollInterval);
 	}

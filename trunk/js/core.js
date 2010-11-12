@@ -33,6 +33,9 @@ function fillData()
 				bookmarks[i] = GetInfo(nodes[i]);
 				
 			lastReadDate = new Date();
+
+			setStorageData();
+			updateBadge();	
 			}
 		}
 	else
@@ -48,7 +51,7 @@ function fillData()
 			case "options":
 				break;
 			case "background":
-				setBadge();
+				setBackgroudTimeout();
 				break;
 			}
 	}	
@@ -214,7 +217,7 @@ function fCallback(tab)
 function setStorageData()
 	{
 	//localStorage.bookmarksData = bookmarks;
-	createCookie("bookmarksData", bookmarks, 1);
+	localStorage.setObject("bookmarksData", bookmarks);
 	localStorage.lastReadDate = lastReadDate;
 	localStorage.noLoggedIn = noLoggedIn;
 	localStorage.currentLabel = currentLabel;
@@ -223,7 +226,7 @@ function setStorageData()
 function getStorageData()
 	{
 	//bookmarks = localStorage.bookmarksData;
-	bookmarks = readCookie("bookmarksData");
+	bookmarks = localStorage.getObject("bookmarksData");	
 	lastReadDate = new Date(localStorage.lastReadDate);
 	noLoggedIn = (localStorage.noLoggedIn == "true");
 	currentLabel = localStorage.currentLabel;
@@ -248,6 +251,14 @@ function readCookie(name) {
 		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
 	}
 	return null;
+}
+
+Storage.prototype.setObject = function (key, value) {
+    this.setItem(key, JSON.stringify(value));
+}
+
+Storage.prototype.getObject = function (key) {
+    return this.getItem(key) && JSON.parse(this.getItem(key));
 }
 
 setDefaultVariables();	

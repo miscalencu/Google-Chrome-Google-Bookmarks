@@ -9,7 +9,8 @@
 			<input type="text" id="query" name="query" onkeyup="ShowBookmarks(currentLabel)" /> 
 			<a href="#" onclick="clearSearch()"><img align="absmiddle" src="images/delete.gif" alt="clear search query" title="clear search query" /></a>
 			<a href="javascript:AddBookmark()"><img src="images/add.gif" alt="add bookmark" title="add bookmark" align="absmiddle" /></a>
-			<a href="#" onclick="showUrl('http://www.google.com/bookmarks')"><img align="absmiddle" src="images/bookmarks.gif" alt="go to Google Bookmarks" title="go to Google Bookmarks" /></a>
+			<a href="#" onclick="refreshBookmarks()"><img align="absmiddle" src="images/refresh.png" width="14" alt="refresh" title="refresh" /></a>
+			<a href="#" onclick="showUrl('http://www.google.com/bookmarks')"><img align="absmiddle" width="14" src="images/bookmarks.png" alt="go to ..." title="go to ..." /></a>
 		</div>
 		<div id="bookmarks"></div>
 		<div id="footer"></div>
@@ -22,9 +23,9 @@
 		<script language="javascript" type="text/javascript">
 			function Init()
 				{
+				getStorageData();
 				document.getElementById("query").value = localStorage.lastQuery;
 
-				getStorageData();
 				ShowBookmarks("");
 
 				document.getElementById("query").focus();
