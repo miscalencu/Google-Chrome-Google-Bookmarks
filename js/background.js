@@ -5,5 +5,5 @@ function Init()
 	
 function setBackgroudTimeout()
 	{
-	timeOut = window.setTimeout("Init();", pollInterval);
+	timeOut = window.setTimeout("Init();", 1000 * 60 * parseInt(localStorage.readTimeout));
 	}
