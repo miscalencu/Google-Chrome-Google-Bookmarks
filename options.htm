@@ -10,7 +10,7 @@
 		<span id="power">powered by</span>
 		<a href="http://code.google.com/" target="_blank"><img align="middle" border="0" src="images/code_logo.png" alt="Google APIs" title="Google APIs" /></a>
 
-		<h1>Settings for Google Weather for Chrome extension</h1>
+		<h1>Settings for Lite Bookmarks for Chrome extension</h1>
 		<br />
 
 		<table class="box" cellpadding="5" cellspacing="5">
@@ -38,6 +38,15 @@
 		</ul>
 		<br />
 		
+		<script language="javascript" type="text/javascript">
+			for(var i=0; i<document.getElementById("updateTimeout").length; i++)
+				{
+				if(localStorage.readTimeout == document.getElementById("updateTimeout")[i].value)
+					{
+					document.getElementById("updateTimeout")[i].selected = true;
+					}
+				}
+		</script>
 		
 		<b>Please 
 		<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=APGKSVZZDQMJA"><img border="0" src="https://www.paypal.com/en_GB/i/btn/btn_donate_SM.gif"align="absmiddle" alt="PayPal - The safer, easier way to pay online." /></a> 

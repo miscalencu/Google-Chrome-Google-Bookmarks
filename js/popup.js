@@ -61,3 +61,8 @@ function clearSearch()
 	ShowBookmarks(currentLabel);
 	document.getElementById("query").focus();
 	}	
+
+function refreshBookmarks()
+	{
+	GetBookmarks();
+	}
