@@ -12,6 +12,9 @@ function setDefaultVariables()
 		
 	if(!localStorage.lastQuery)
 		localStorage.lastQuery = "";
+
+	if(!localStorage.showTotalBookmarks)
+		localStorage.showTotalBookmarks = 1;
 	}
 	
 function fillData() 
@@ -147,8 +150,16 @@ function updateBadge()
 	{
 	if(!noLoggedIn)
 		{
-		chrome.browserAction.setBadgeText({ text: String(bookmarks.length) });
-		chrome.browserAction.setBadgeBackgroundColor({color:[0, 153, 204, 255]});
+		if(localStorage.showTotalBookmarks == 1)
+			{
+			chrome.browserAction.setBadgeText({ text: String(bookmarks.length) });
+			chrome.browserAction.setBadgeBackgroundColor({color:[0, 153, 204, 255]});
+			}
+		else
+			{
+			chrome.browserAction.setBadgeText({ text:"" });
+			}
+
 		chrome.browserAction.setTitle({title: "Total bookmarks: " + bookmarks.length + ".\nLast checked on: " + lastReadDate.toGMTString() });
 		chrome.browserAction.setIcon({path: "images/icon_on.png" });
 		}
