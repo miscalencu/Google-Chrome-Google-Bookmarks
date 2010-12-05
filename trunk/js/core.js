@@ -15,6 +15,9 @@ function setDefaultVariables()
 
 	if(!localStorage.showTotalBookmarks)
 		localStorage.showTotalBookmarks = 1;
+
+	if(!localStorage.showLabels)
+		localStorage.showLabels = 1;
 	}
 	
 function fillData() 

@@ -71,3 +71,19 @@ body, table tr td
 	border:0;
 	outline: none;
 	}
+
+#bookmarks table.label
+	{
+	margin: 0px 0px 3px 5px;
+	background-color: #f3e7b3; 
+	display: inline;
+	}
+
+#bookmarks table.label a, #bookmarks table.label a:link, #bookmarks table.label a:visited, #bookmarks table.label a:hover, #bookmarks table.label a:active
+	{
+	font-family: Verdana;
+	font-weight: normal;
+	text-decoration:none;
+	font-size: 9px;
+	color: #666666;
+	}

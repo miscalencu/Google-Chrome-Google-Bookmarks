@@ -44,7 +44,25 @@ function ShowBookmarks(label)
 
 		for(var i=0; i < _bookmarks.length; i++)
 				if((q == "") || (_bookmarks[i].title.toLowerCase().indexOf(q) != -1))
-					content += "<img width=\"16\" height=\"16\" src=\"" + _bookmarks[i].favicon + "\" alt=\"\" align=\"absmiddle\" /> <a href=\"javascript:showUrl('" + _bookmarks[i].url + "')\">" + _bookmarks[i].title + "</a><br />";
+					{
+					content += "<img width=\"16\" height=\"16\" src=\"" + _bookmarks[i].favicon + "\" alt=\"\" align=\"absmiddle\" /> <a href=\"javascript:showUrl('" + _bookmarks[i].url + "')\">" + _bookmarks[i].title + "</a>";
+					if(localStorage.showLabels == 1)
+						{
+						for(var j=0; j < _bookmarks[i].labels.length; j++)
+							{
+							content += "<table class=\"label\" cellpadding=\"0\" cellspacing=\"0\" valign=\"middle\">";
+							content += "	<tr>";
+							content += "		<td><img src=\"../images/left_edge.png\" /></td>";
+							content += "		<td>";
+							content += "			<a href=\"javascript:document.getElementById('query').value='';ShowBookmarks('" + _bookmarks[i].labels[j] + "')\">" + _bookmarks[i].labels[j] + "</a>";
+							content += "		</td>";
+							content += "		<td><img src=\"../images/right_edge.png\" /></td>";
+							content += "	</tr>";
+							content += "</table>";
+							}
+						}
+					content += "<br />";
+					}
 		}
 
 	document.getElementById("bookmarks").innerHTML = content;
