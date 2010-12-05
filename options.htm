@@ -33,6 +33,12 @@
 					<input type="checkbox" id="showTotalBookmarks" name="showTotalBookmarks" onClick="localStorage.showTotalBookmarks = (this.checked?1:0); getStorageData(); updateBadge();" />
 				</td>
 			</tr>
+			<tr>
+				<th>Show labels</th>
+				<td>
+					<input type="checkbox" id="showLabels" name="showLabels" onClick="localStorage.showLabels = (this.checked?1:0);" />
+				</td>
+			</tr>
 		</table>
 
 		<br />
@@ -46,6 +52,7 @@
 		
 		<script language="javascript" type="text/javascript">
 			document.getElementById("showTotalBookmarks").checked = (localStorage.showTotalBookmarks == 1);
+			document.getElementById("showLabels").checked = (localStorage.showLabels == 1);
 			for(var i=0; i<document.getElementById("updateTimeout").length; i++)
 				{
 				if(localStorage.readTimeout == document.getElementById("updateTimeout")[i].value)
