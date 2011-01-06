@@ -67,7 +67,7 @@ function ShowBookmarks(label)
 
 	document.getElementById("bookmarks").innerHTML = content;
 	document.getElementById("title").innerHTML = title;	
-	document.getElementById("footer").innerHTML = "<div class=\"footer\">Last read on: " + lastReadDate.toGMTString() + "</div>"
+	document.getElementById("footer").innerHTML = "<div class=\"footer\">Last read on: " + formatToLocalTimeDate(lastReadDate) + "</div>"
 
 	currentLabel = label;
 	localStorage.lastQuery = q;

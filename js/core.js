@@ -163,7 +163,7 @@ function updateBadge()
 			chrome.browserAction.setBadgeText({ text:"" });
 			}
 
-		chrome.browserAction.setTitle({title: "Total bookmarks: " + bookmarks.length + ".\nLast checked on: " + lastReadDate.toGMTString() });
+		chrome.browserAction.setTitle({title: "Total bookmarks: " + bookmarks.length + ".\nLast checked on: " + formatToLocalTimeDate(lastReadDate) });
 		chrome.browserAction.setIcon({path: "images/icon_on.png" });
 		}
 	else
@@ -274,5 +274,11 @@ Storage.prototype.setObject = function (key, value) {
 Storage.prototype.getObject = function (key) {
     return this.getItem(key) && JSON.parse(this.getItem(key));
 }
+
+// Format to local time from UTC
+function formatToLocalTimeDate(inDate) 
+	{
+	return dateFormat(inDate, "ddd, d mmmm yyyy, h:MM:ss TT");
+	}
 
 setDefaultVariables();	
