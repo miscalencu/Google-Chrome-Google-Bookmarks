@@ -1,7 +1,7 @@
 {
 	"name": "Lite Bookmarks",
 	"description" : "Chrome extension that gets bookmarks from Google Bookmarks. Labels included. Simple.",
-	"version": "0.55",
+	"version": "0.57",
 	"background_page": "background.htm",
 	"options_page": "options.htm",
 	"browser_action": {
@@ -10,8 +10,7 @@
 		"popup": "popup.htm"
 	},
 	"icons": {
-		"128": "images/icon_128.png",
-		"48": "images/icon_48.png"
+		"128": "images/icon_128.png"
 	},
 	"permissions": [
 	    "tabs",
