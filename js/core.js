@@ -43,6 +43,7 @@ function fillData()
 			setStorageData();
 			updateBadge();	
 			}
+		noLoggedIn = false;
 		}
 	else
 		{
