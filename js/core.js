@@ -13,7 +13,7 @@ function setDefaultVariables()
 	if(!localStorage.lastQuery)
 		localStorage.lastQuery = "";
 
-	if(!localStorage.showTotalBookmarks)
+	if(!localStorage.showTotalBookmarks)6/23/2011
 		localStorage.showTotalBookmarks = 1;
 
 	if(!localStorage.showLabels)
@@ -103,6 +103,9 @@ function GetInfo(xmlnode)
 			}
 		}
 
+	if(bookmarkObj.favicon == "images/favicon.gif") // default favicon
+		bookmarkObj.favicon = "http://www.google.com/s2/u/0/favicons?domain=" + ExtractDomain(bookmarkObj.url);
+
 	return bookmarkObj;
 	}
 
@@ -149,7 +152,16 @@ function FillUnassignedBookmarks()
 	return ret;
 	}
 	
-	
+function ExtractDomain(url)	
+	{
+	url = url.toLowerCase();
+	url = url.replace("http://", "");
+	url = url.replace("https://", "");
+	url = url.replace("ftp://", "");
+
+	return url.split("/")[0];
+	}
+
 function updateBadge()
 	{
 	if(!noLoggedIn)
