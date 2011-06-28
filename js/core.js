@@ -13,7 +13,7 @@ function setDefaultVariables()
 	if(!localStorage.lastQuery)
 		localStorage.lastQuery = "";
 
-	if(!localStorage.showTotalBookmarks)6/23/2011
+	if(!localStorage.showTotalBookmarks)
 		localStorage.showTotalBookmarks = 1;
 
 	if(!localStorage.showLabels)
@@ -29,7 +29,8 @@ function fillData()
 		{
 		docXML = req.responseXML.documentElement;
 		var nodes = docXML.getElementsByTagName("bookmark");
-		
+		noLoggedIn = false;
+
 		if(!nodes || nodes == null || nodes.length == 0)
 			{
 			}
@@ -43,7 +44,6 @@ function fillData()
 			setStorageData();
 			updateBadge();	
 			}
-		noLoggedIn = false;
 		}
 	else
 		{
