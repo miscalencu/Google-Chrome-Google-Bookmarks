@@ -28,7 +28,7 @@ function ShowBookmarks(label)
 			else
 				{
 				_bookmarks = bookmarks.sort(CompareNames); // search in all bookmarks in home page
-				_labels = GetLabels().split("|").sort(CompareValues);
+				_labels = GetLabels().split("|").sort();
 				}
 			}
 		else
@@ -45,7 +45,7 @@ function ShowBookmarks(label)
 		for(var i=0; i < _bookmarks.length; i++)
 				if((q == "") || (_bookmarks[i].title.toLowerCase().indexOf(q) != -1))
 					{
-					content += "<img width=\"16\" height=\"16\" src=\"" + _bookmarks[i].favicon + "\" alt=\"\" align=\"absmiddle\" /> <a href=\"javascript:showUrl('" + _bookmarks[i].url + "')\">" + _bookmarks[i].title + "</a>";
+					content += "<img width=\"16\" height=\"16\" src=\"" + _bookmarks[i].favicon + "\" alt=\"\" align=\"absmiddle\" /> <a title=\"" + _bookmarks[i].url + "\" href=\"javascript:showUrl('" + _bookmarks[i].url + "')\">" + _bookmarks[i].title + "</a>";
 					if(localStorage.showLabels == 1)
 						{
 						for(var j=0; j < _bookmarks[i].labels.length; j++)

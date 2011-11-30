@@ -190,32 +190,27 @@ function updateBadge()
 
 function CompareNames(a, b)
 	{
-	var q = document.getElementById("query").value.toLowerCase();
+	var titlea = Trim(a.title.toLowerCase());
+	var titleb = Trim(b.title.toLowerCase());
+
+	var q = Trim(document.getElementById("query").value.toLowerCase());
 	if(q == "") // sort by relevance - position of query
-		return a.title.toLowerCase() > b.title.toLowerCase();
+		return (titlea < titleb) ? -1 : 1;
 	else
 		{
-		if(a.title.toLowerCase().indexOf(q) != b.title.toLowerCase().indexOf(q))
-			return parseInt(a.title.toLowerCase().indexOf(q)) - parseInt(b.title.toLowerCase().indexOf(q));
+		if(titlea.indexOf(q) != titleb.indexOf(q))
+			{
+			var inda = parseInt(titlea.indexOf(q));
+			var indb = parseInt(titleb.indexOf(q));
+			inda = (inda == -1) ? 10000 : inda;
+			indb = (indb == -1) ? 10000 : indb;
+			return (inda < indb) ? -1 : 1;
+			}
 		else
-			return a.title.toLowerCase() > b.title.toLowerCase();	
+			return (titlea < titleb) ? -1 : 1;
 		}
 	}
 	
-function CompareValues(a, b)
-	{
-	var q = document.getElementById("query").value.toLowerCase();
-	if(q == "") // sort by relevance - position of query
-		return a.toLowerCase() > b.toLowerCase();
-	else
-		{
-		if(a.toLowerCase().indexOf(q) != b.toLowerCase().indexOf(q))
-			return parseInt(a.toLowerCase().indexOf(q)) - parseInt(b.toLowerCase().indexOf(q));
-		else
-			return a.toLowerCase() > b.toLowerCase();
-		}
-	}
-
 function showUrl(url)
 	{
 	chrome.tabs.create({url: url});
@@ -292,6 +287,11 @@ Storage.prototype.getObject = function (key) {
 function formatToLocalTimeDate(inDate) 
 	{
 	return dateFormat(inDate, "ddd, d mmmm yyyy, h:MM:ss TT");
+	}
+
+function Trim(str)
+	{
+	return str.replace(/^\s+|\s+$/g,'');
 	}
 
 setDefaultVariables();	
