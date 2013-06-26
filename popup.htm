@@ -2,35 +2,21 @@
 	<head>
 		<link href="/css/popup.css" media="screen" rel="stylesheet" type="text/css" />
 	</head>
-	<body onLoad="Init()">
+	<body>
 		<div id="title"></div>
 		<div id="search">
 			<label for="query"><img align="absmiddle" src="images/search.gif" alt="search" title="search" /></label>
-			<input type="text" id="query" name="query" onkeyup="ShowBookmarks(currentLabel)" /> 
-			<a href="#" onclick="clearSearch()"><img align="absmiddle" src="images/delete.gif" alt="clear search query" title="clear search query" /></a>
-			<a href="javascript:AddBookmark()"><img src="images/add.gif" alt="add bookmark" title="add bookmark" align="absmiddle" /></a>
-			<a href="#" onclick="refreshBookmarks()"><img align="absmiddle" src="images/refresh.png" width="14" alt="refresh" title="refresh" /></a>
-			<a href="#" onclick="showUrl('http://www.google.com/bookmarks')"><img align="absmiddle" width="14" src="images/bookmarks.png" alt="go to ..." title="go to ..." /></a>
+			<input type="text" id="query" name="query" /> 
+			<a href="#" id="link_clear"><img align="absmiddle" src="images/delete.gif" alt="clear search query" title="clear search query" /></a>
+			<a href="#" id="link_add"><img src="images/add.gif" alt="add bookmark" title="add bookmark" align="absmiddle" /></a>
+			<a href="#" id="link_refresh"><img align="absmiddle" src="images/refresh.png" width="14" alt="refresh" title="refresh" /></a>
+			<a href="#" id="link_goto"><img align="absmiddle" width="14" src="images/bookmarks.png" alt="go to ..." title="go to ..." /></a>
 		</div>
 		<div id="bookmarks"></div>
 		<div id="footer"></div>
-		<script language="javascript" type="text/javascript">
-			var currentPage = "popup";
-		</script>		
+
 		<script language="javascript" type="text/javascript" src="js/dateformat.js"></script>
 		<script language="javascript" type="text/javascript" src="js/core.js"></script>
-		<script language="javascript" type="text/javascript" src="js/popup.js"></script>
-		
-		<script language="javascript" type="text/javascript">
-			function Init()
-				{
-				getStorageData();
-				document.getElementById("query").value = localStorage.lastQuery;
-
-				ShowBookmarks("");
-
-				document.getElementById("query").focus();
-				}
-		</script>
+		<script language="javascript" type="text/javascript" src="js/popup.js"></script>		
 	</body>
 </html>

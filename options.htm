@@ -50,17 +50,7 @@
 		</ul>
 		<br />
 		
-		<script language="javascript" type="text/javascript">
-			document.getElementById("showTotalBookmarks").checked = (localStorage.showTotalBookmarks == 1);
-			document.getElementById("showLabels").checked = (localStorage.showLabels == 1);
-			for(var i=0; i<document.getElementById("updateTimeout").length; i++)
-				{
-				if(localStorage.readTimeout == document.getElementById("updateTimeout")[i].value)
-					{
-					document.getElementById("updateTimeout")[i].selected = true;
-					}
-				}
-		</script>
+		<script language="javascript" type="text/javascript" src="js/options.js"></script>
 		
 		<b>Please 
 		<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=APGKSVZZDQMJA"><img border="0" src="https://www.paypal.com/en_GB/i/btn/btn_donate_SM.gif"align="absmiddle" alt="PayPal - The safer, easier way to pay online." /></a> 
