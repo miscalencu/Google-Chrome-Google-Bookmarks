@@ -6,4 +6,8 @@ for(var i=0; i<document.getElementById("updateTimeout").length; i++)
 		{
 		document.getElementById("updateTimeout")[i].selected = true;
 		}
-	}
+}
+
+document.getElementById("updateTimeout").addEventListener("change", function () { localStorage.readTimeout = this[this.selectedIndex].value; });
+document.getElementById("showTotalBookmarks").addEventListener("change", function () { localStorage.showTotalBookmarks = (this.checked ? 1 : 0); getStorageData(); updateBadge(); });
+document.getElementById("showLabels").addEventListener("change", function () { localStorage.showLabels = (this.checked ? 1 : 0); });
