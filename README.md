@@ -17,7 +17,7 @@ Link to "Google Bookmarks" link in order to go to Google Bookmarks homepage.
 
 Awards:
 
-http://s1.softpedia-static.com/_img/sp100clean.png
+![Softpedia](http://s1.softpedia-static.com/_img/sp100clean.png)
 
 ** Features to be implemented: **
 
