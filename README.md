@@ -1,4 +1,4 @@
-**Google Chrome - Lite Bookmarks**
+#Google Chrome - Lite Bookmarks
 
 Chrome extension that gets bookmarks from Google Bookmarks. Labels included. Simple.
 
