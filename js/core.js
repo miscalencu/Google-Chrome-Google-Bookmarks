@@ -104,7 +104,7 @@ function GetInfo(xmlnode)
 		}
 
 	if(bookmarkObj.favicon == "images/favicon.gif") // default favicon
-		bookmarkObj.favicon = "http://www.google.com/s2/u/0/favicons?domain=" + ExtractDomain(bookmarkObj.url);
+		bookmarkObj.favicon = "https://www.google.com/s2/u/0/favicons?domain=" + ExtractDomain(bookmarkObj.url);
 
 	return bookmarkObj;
 	}
