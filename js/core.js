@@ -1,4 +1,3 @@
-var req = new XMLHttpRequest();
 var bookmarks = new Array();
 var lastReadDate = new Date();
 var noLoggedIn = false;
@@ -20,14 +19,11 @@ function setDefaultVariables()
 		localStorage.showLabels = 1;
 	}
 	
-function fillData() 
-	{
-  	if(req.readyState != 4)
-		return;	
-
-	if(req.responseXML != null)
+function fillData(result) 
+{
+	if (result != null)
 		{
-		docXML = req.responseXML.documentElement;
+		docXML = result.documentElement;
 		var nodes = docXML.getElementsByTagName("bookmark");
 		noLoggedIn = false;
 
@@ -64,14 +60,25 @@ function fillData()
 	}	
 	
 	
-function GetBookmarks() 
-	{
+function GetBookmarks() {
 	bookmarks = new Array();
-	var url = "http://www.google.com/bookmarks/?output=xml&num=10000";
-	req.open("GET", url, true);
-	req.onreadystatechange = fillData;
-	req.send(null);
-	}
+	
+	console.log("starting ajax call ...");
+	$.ajax({
+		url: "http://www.google.com/bookmarks",
+		dataType: "xml",
+		async: true,
+		data: "output=xml&num=10000",
+		success: function (result) {
+			console.log("success fired ...");
+			fillData(result);
+		},
+		fail: function (jqXHR, textStatus) {
+			console.log("fail fired ...");
+			alert("Error: " + textStatus);
+		}
+	});
+}
 
 function GetInfo(xmlnode)
 	{

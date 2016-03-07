@@ -1,11 +1,14 @@
 <html>
 	<head>
+		<title>Google Bookmarks</title>
 		<link href="/css/popup.css" media="screen" rel="stylesheet" type="text/css" />
+		<link href="/font-awesome/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="js/jquery/jquery-1.12.1.min.js"></script>
 	</head>
 	<body>
 		<div id="title"></div>
 		<div id="search">
-			<label for="query"><img align="absmiddle" src="images/search.gif" alt="search" title="search" /></label>
+			<label for="query"><i class="fa fa-search" style="color:#aaaaaa;padding:0 4px 0 4px;" title="search"></i></label>
 			<input type="text" id="query" name="query" /> 
 			<a href="#" id="link_clear"><img align="absmiddle" src="images/delete.gif" alt="clear search query" title="clear search query" /></a>
 			<a href="#" id="link_add"><img src="images/add.gif" alt="add bookmark" title="add bookmark" align="absmiddle" /></a>
@@ -15,8 +18,8 @@
 		<div id="bookmarks"></div>
 		<div id="footer"></div>
 
-		<script language="javascript" type="text/javascript" src="js/dateformat.js"></script>
-		<script language="javascript" type="text/javascript" src="js/core.js"></script>
-		<script language="javascript" type="text/javascript" src="js/popup.js"></script>		
+		<script type="text/javascript" src="js/dateformat.js"></script>
+		<script type="text/javascript" src="js/core.js"></script>
+		<script type="text/javascript" src="js/popup.js"></script>		
 	</body>
 </html>
