@@ -5,146 +5,120 @@ var _labels = new Array();
 var _bookmarks = new Array();
 var q = "";
 
-function ShowBookmarks(label) 
-	{
+function ShowBookmarks(label) {
 	var content = "";
 	var title = "";
 
-	q = document.getElementById("query").value.toLowerCase();
+	q = $("#query").val().toLowerCase();
 	_labels = new Array();
 	_bookmarks = new Array();
 	currentLabel = "";
 
-	if(noLoggedIn)
-		{
+	if (noLoggedIn) {
 		title = "You are not logged in!";
 		content = "<a id=\"link_login\">Click here to log in.</a>"
-		}
-	else
-		{
-		if(label == "")
-			{
+	}
+	else {
+		if (label == "") {
 			title = "All bookmarks";
-			if(q == "")
-				{
+			if (q == "") {
 				_bookmarks = FillUnassignedBookmarks().sort(CompareNames);
 				_labels = GetLabels().split("|").sort();
-				}
-			else
-				{
+			}
+			else {
 				_bookmarks = bookmarks.sort(CompareNames); // search in all bookmarks in home page
 				_labels = GetLabels().split("|").sort();
-				}
 			}
-		else
-			{
-            title = label;
+		}
+		else {
+			title = label;
 			_labels = new Array();
 			_bookmarks = FillBookmarks(label).sort(CompareNames);
-			content += "<img width=\"16\" height=\"16\" src=\"images/folder.gif\" alt=\"\" align=\"absmiddle\" /> <a id=\"link_root\" href=\"#\">...</a><br />";
-			}
-			
-		for(var i=0; i < _labels.length; i++)
-			if((q == "") || (_labels[i].toLowerCase().indexOf(q) != -1))
-		        content += "<img width=\"16\" height=\"16\" src=\"images/folder.gif\" alt=\"\" align=\"absmiddle\" /> <a title=\"" + _labels[i] + "\" href=\"#\" id=\"link_folder_" + i + "\">" + _labels[i] + "</a><br />";
-
-		for(var i=0; i < _bookmarks.length; i++)
-				if((q == "") || (_bookmarks[i].title.toLowerCase().indexOf(q) != -1))
-					{
-					content += "<img width=\"16\" height=\"16\" src=\"" + _bookmarks[i].favicon + "\" alt=\"\" align=\"absmiddle\" /> <a href=\"#\" id=\"link_url_" + i + "\" title=\"" + _bookmarks[i].url + "\">" + _bookmarks[i].title + "</a>";
-					if(localStorage.showLabels == 1)
-						{
-						for(var j=0; j < _bookmarks[i].labels.length; j++)
-							{
-							content += "<table class=\"label\" cellpadding=\"0\" cellspacing=\"0\" valign=\"middle\">";
-							content += "	<tr>";
-							content += "		<td><img src=\"../images/left_edge.png\" /></td>";
-							content += "		<td>";
-							content += "			<a href=\"#\" id=\"link_label_" + i + "_" + j + "\" title=\"" + _bookmarks[i].labels[j] + "\">" + _bookmarks[i].labels[j] + "</a>";
-							content += "		</td>";
-							content += "		<td><img src=\"../images/right_edge.png\" /></td>";
-							content += "	</tr>";
-							content += "</table>";
-							}
-						}
-					content += "<br />";
-					}
+			content += "<i class=\"fa fa-folder-open-o fa-lg\" title=\"\" style=\"vertical-align:middle; color: black; line-height: 18px\" /> <a id=\"link_root\" href=\"#\">...</a><br />";
 		}
 
-	document.getElementById("bookmarks").innerHTML = content;
-	document.getElementById("title").innerHTML = title;	
-	document.getElementById("footer").innerHTML = "<div class=\"footer\">Last read on: " + formatToLocalTimeDate(lastReadDate) + "</div>"
+		for (var i = 0; i < _labels.length; i++)
+			if ((q == "") || (_labels[i].toLowerCase().indexOf(q) != -1))
+				content += "<i class=\"fa fa-folder-o fa-lg\" title=\"\" style=\"vertical-align:middle; color: black; line-height: 18px\" /> <a title=\"" + _labels[i] + "\" href=\"#\" id=\"link_folder_" + i + "\">" + _labels[i] + "</a><br />";
+
+		for (var i = 0; i < _bookmarks.length; i++)
+			if ((q == "") || (_bookmarks[i].title.toLowerCase().indexOf(q) != -1)) {
+				content += "<img width=\"16\" height=\"16\" src=\"" + _bookmarks[i].favicon + "\" alt=\"\" align=\"absmiddle\" /> <a href=\"#\" id=\"link_url_" + i + "\" title=\"" + _bookmarks[i].url + "\">" + _bookmarks[i].title + "</a>";
+				if (localStorage.showLabels == 1) {
+					for (var j = 0; j < _bookmarks[i].labels.length; j++) {
+						content += "<a href=\"#\" class=\"label\" id=\"link_label_" + i + "_" + j + "\" title=\"" + _bookmarks[i].labels[j] + "\">" + _bookmarks[i].labels[j] + "</a>";
+					}
+				}
+				content += "<br />";
+			}
+	}
+
+	$("#bookmarks").html(content);
+	$("#title").html(title);
+	$("#footer").html("Last read on: " + formatToLocalTimeDate(lastReadDate));
 
 	currentLabel = label;
 	localStorage.lastQuery = q;
 
 	AddListenersOnBookmarks(noLoggedIn);
-	}
+}
 	
-function clearSearch()
-	{
-	document.getElementById("query").value = "";
+function clearSearch() {
+	$("#query").val("");
 	ShowBookmarks(currentLabel);
-	document.getElementById("query").focus();
-	}	
+	$("#query").focus();
+}
 
-function refreshBookmarks()
-	{
+function refreshBookmarks() {
 	GetBookmarks();
-	}
+}
 
-function Init()
-	{
+function Init() {
 	getStorageData();
-	document.getElementById("query").value = localStorage.lastQuery;
+	$("#query").val(localStorage.lastQuery);
 	ShowBookmarks("");
-	document.getElementById("query").focus();
-	}
+	$("#query").focus();
+}
 
 function AddListenersOnBookmarks(noLoggedIn) {
-	if(noLoggedIn) 
-	{
-		document.getElementById("link_login").addEventListener("click", function () { showUrl('http://www.google.com/bookmarks'); });
+	if (noLoggedIn) {
+		$("#link_login").on("click", function () { showUrl('http://www.google.com/bookmarks'); });
 	}
-	else 
-	{
-		if(document.getElementById("link_root") != null)
-			document.getElementById("link_root").addEventListener("click", function () { ShowBookmarks(""); });
+	else {
+		if ($("#link_root").length > 0)
+			$("#link_root").on("click", function () { ShowBookmarks(""); });
 
 		for (var i = 0; i < _labels.length; i++) {
-		    if ((q == "") || (_labels[i].toLowerCase().indexOf(q) != -1)) {
-		        {
-		            document.getElementById("link_folder_" + i).addEventListener("click", function () { document.getElementById("query").value = ""; ShowBookmarks(this.title); });
-		        }
+			if ((q == "") || (_labels[i].toLowerCase().indexOf(q) != -1)) {
+				$("#link_folder_" + i).on("click", function () { $("#query").val(""); ShowBookmarks(this.title); });
 			}
 		}
 
-		for(var i=0; i < _bookmarks.length; i++)
-		{
-			if((q == "") || (_bookmarks[i].title.toLowerCase().indexOf(q) != -1))
-				{
-				link = document.getElementById("link_url_" + i);
-				link.addEventListener("click", function () { showUrl(this.title); });
-				if(localStorage.showLabels == 1)
-					{
-					for(var j=0; j < _bookmarks[i].labels.length; j++)
-						{
-						document.getElementById("link_label_" + i + "_" + j).addEventListener("click", function () { document.getElementById("query").value = ""; ShowBookmarks(this.title); });
-						}
+		for (var i = 0; i < _bookmarks.length; i++) {
+			if ((q == "") || (_bookmarks[i].title.toLowerCase().indexOf(q) != -1)) {
+				link = $("#link_url_" + i);
+				$(link).on("click", function () { showUrl(this.title); });
+				if (localStorage.showLabels == 1) {
+					for (var j = 0; j < _bookmarks[i].labels.length; j++) {
+						$("#link_label_" + i + "_" + j).on("click", function () { $("#query").value = ""; ShowBookmarks(this.title); });
 					}
 				}
+			}
 		}
 
 	}
 }
 
 function AddListeners() {
-	document.getElementById("query").addEventListener("keyup", function () { ShowBookmarks(currentLabel); });
-	document.getElementById("link_clear").addEventListener("click", function () { clearSearch(); });
-	document.getElementById("link_add").addEventListener("click", function () { AddBookmark(); });
-	document.getElementById("link_refresh").addEventListener("click", function () { refreshBookmarks(); });
-	document.getElementById("link_goto").addEventListener("click", function () { showUrl("http://www.google.com/bookmarks"); });
+	$("#query").on("keyup", function () { ShowBookmarks(currentLabel); });
+	$("#link_clear").on("click", function () { clearSearch(); });
+	$("#link_add").on("click", function () { AddBookmark(); });
+	$("#link_refresh").on("click", function () { refreshBookmarks(); });
+	$("#link_goto").on("click", function () { showUrl("http://www.google.com/bookmarks"); });
 }
 
-AddListeners();
-Init();
+$(document).ready(function () {
+	AddListeners();
+	Init();
+});
+

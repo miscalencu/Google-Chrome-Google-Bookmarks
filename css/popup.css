@@ -54,6 +54,11 @@ body, table tr td
 	padding: 2px;
 	background-color: #F7F7F7;	
 	}
+
+	#search .fa {
+		font-size: 1.2em;
+		padding:1px 3px 1px 2px
+	}
 	
 #search img
 	{
@@ -64,6 +69,7 @@ body, table tr td
 	{
 	border: 0;
 	width: 230px;
+	padding: 2px;
 	}
 	
 #search input:focus
@@ -72,11 +78,17 @@ body, table tr td
 	outline: none;
 	}
 
-#bookmarks table.label
+#bookmarks a.label
 	{
-	margin: 0px 0px 3px 5px;
+	margin: 3px 0px 3px 5px;
 	background-color: #f3e7b3; 
 	display: inline;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+	text-decoration: none;
+	font-size: 0.9em;
+	padding: 1px 7px 1px 7px;
 	}
 
 #bookmarks table.label a, #bookmarks table.label a:link, #bookmarks table.label a:visited, #bookmarks table.label a:hover, #bookmarks table.label a:active
