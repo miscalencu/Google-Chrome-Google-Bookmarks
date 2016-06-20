@@ -19,7 +19,6 @@ function setDefaultVariables() {
 }
 	
 function fillData(result) {
-	debugger;
 	if (result != null) {
 		docXML = result.documentElement;
 		var $nodes = $(docXML).find("bookmark");
@@ -61,10 +60,13 @@ function GetBookmarks() {
 	if (currentPage == "popup") {
 		$("#bookmarks").html("Please wait. Reloading data ... <i class=\"fa fa-spin fa-spinner fa-lg\"></i>");
 	}
-
+	
 	$.ajax({
 		url: "http://www.google.com/bookmarks/",
 		data: "output=xml&num=10000",
+		beforeSend: function (request) {
+			request.setRequestHeader("Content-Type", "text/xml");
+		},
 		success: function (result) {
 			console.log("success fired ...");
 			fillData(result);
