@@ -19,6 +19,7 @@ function setDefaultVariables() {
 }
 	
 function fillData(result) {
+	debugger;
 	if (result != null) {
 		docXML = result.documentElement;
 		var $nodes = $(docXML).find("bookmark");
@@ -62,17 +63,15 @@ function GetBookmarks() {
 	}
 
 	$.ajax({
-		url: "http://www.google.com/bookmarks",
-		dataType: "xml",
-		async: true,
+		url: "http://www.google.com/bookmarks/",
 		data: "output=xml&num=10000",
 		success: function (result) {
 			console.log("success fired ...");
 			fillData(result);
 		},
-		fail: function (jqXHR, textStatus) {
+		error: function (jqXHR, textStatus, err) {
 			console.log("fail fired ...");
-			alert("Error: " + textStatus);
+			alert("Error: " + err);
 		}
 	});
 }
@@ -210,7 +209,7 @@ function fCallback(tab) {
 	var a = window;
 	b = document;
 	c = encodeURIComponent;
-	showPopup("http://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk=" + c(tab.url) + "&title=" + c(tab.title));
+	showPopup("https://www.google.com/bookmarks/mark?op=edit&output=popup&bkmk=" + c(tab.url) + "&title=" + c(tab.title));
 }
 
 function setStorageData() {
