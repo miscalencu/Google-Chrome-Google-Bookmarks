@@ -1,6 +1,5 @@
 var bookmarks = new Array();
 var lastReadDate = new Date();
-var noLoggedIn = false;
 var currentLabel = "";
 var docXML;
 
@@ -16,13 +15,19 @@ function setDefaultVariables() {
 
 	if (!localStorage.showLabels)
 		localStorage.showLabels = 1;
+	
+	if (!localStorage.lastReadDate)
+		localStorage.lastReadDate = new Date();
+	
+	if (!localStorage.noLoggedIn)
+		localStorage.noLoggedIn = true;
 }
 	
 function fillData(result) {
 	if (result != null) {
 		docXML = result.documentElement;
 		var $nodes = $(docXML).find("bookmark");
-		noLoggedIn = false;
+		localStorage.noLoggedIn = "false";
 
 		if ($nodes.length == 0) {
 		}
@@ -33,12 +38,13 @@ function fillData(result) {
 			lastReadDate = new Date();
 
 			setStorageData();
-			updateBadge();
 		}
 	}
 	else {
-		noLoggedIn = true;
+		localStorage.noLoggedIn = "true";
 	}
+	
+	updateBadge();
 
 	switch (currentPage) {
 		case "popup":
@@ -73,7 +79,8 @@ function GetBookmarks() {
 		},
 		error: function (jqXHR, textStatus, err) {
 			console.log("fail fired ...");
-			alert("Error: " + err);
+			fillData(null); // now it goes here if not logged in
+			// alert("Error: " + err);
 		}
 	});
 }
@@ -154,7 +161,7 @@ function ExtractDomain(url) {
 }
 
 function updateBadge() {
-	if (!noLoggedIn) {
+	if (localStorage.noLoggedIn == "false") {
 		if (localStorage.showTotalBookmarks == 1) {
 			chrome.browserAction.setBadgeText({ text: String(bookmarks.length) });
 			chrome.browserAction.setBadgeBackgroundColor({ color: [0, 153, 204, 255] });
@@ -218,7 +225,6 @@ function setStorageData() {
 	//localStorage.bookmarksData = bookmarks;
 	localStorage.setObject("bookmarksData", bookmarks);
 	localStorage.lastReadDate = lastReadDate;
-	localStorage.noLoggedIn = noLoggedIn;
 	localStorage.currentLabel = currentLabel;
 }
 
@@ -226,7 +232,6 @@ function getStorageData() {
 	//bookmarks = localStorage.bookmarksData;
 	bookmarks = localStorage.getObject("bookmarksData");
 	lastReadDate = new Date(localStorage.lastReadDate);
-	noLoggedIn = (localStorage.noLoggedIn == "true");
 	currentLabel = localStorage.currentLabel;
 }
 

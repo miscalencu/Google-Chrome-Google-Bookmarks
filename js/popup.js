@@ -14,9 +14,9 @@ function ShowBookmarks(label) {
 	_bookmarks = new Array();
 	currentLabel = "";
 
-	if (noLoggedIn) {
+	if (localStorage.noLoggedIn == "true") {
 		title = "You are not logged in!";
-		content = "<a id=\"link_login\">Click here to log in.</a>"
+		content = "<b>You are not logged in!</b><br /><br />Click <a id=\"link_login\" href=\"#\">here to log in</a> or <a id=\"link_refresh_in\" href=\"#\">here to refresh</a>."
 	}
 	else {
 		if (label == "") {
@@ -55,12 +55,15 @@ function ShowBookmarks(label) {
 
 	$("#bookmarks").html(content);
 	$("#title").html(title);
-	$("#footer").html("Last read on: " + formatToLocalTimeDate(lastReadDate));
+	
+	if(lastReadDate != null) {
+		$("#footer").html("Last read on: " + formatToLocalTimeDate(lastReadDate));
+	}
 
 	currentLabel = label;
 	localStorage.lastQuery = q;
 
-	AddListenersOnBookmarks(noLoggedIn);
+	AddListenersOnBookmarks(localStorage.noLoggedIn == "true");
 }
 	
 function clearSearch() {
@@ -83,6 +86,7 @@ function Init() {
 function AddListenersOnBookmarks(noLoggedIn) {
 	if (noLoggedIn) {
 		$("#link_login").on("click", function () { showUrl('http://www.google.com/bookmarks'); });
+		$("#link_refresh_in").on("click", function () { refreshBookmarks(); });
 	}
 	else {
 		if ($("#link_root").length > 0)
