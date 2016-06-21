@@ -61,14 +61,14 @@ function fillData(result) {
 	
 function GetBookmarks() {
 	bookmarks = new Array();
-	console.log("starting ajax call ...");
+	console.log("starting https ajax call ...");
 
 	if (currentPage == "popup") {
 		$("#bookmarks").html("Please wait. Reloading data ... <i class=\"fa fa-spin fa-spinner fa-lg\"></i>");
 	}
 	
 	$.ajax({
-		url: "http://www.google.com/bookmarks/",
+		url: "https://www.google.com/bookmarks/",
 		data: "output=xml&num=10000",
 		beforeSend: function (request) {
 			request.setRequestHeader("Content-Type", "text/xml");

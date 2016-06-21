@@ -1,7 +1,7 @@
 {
 	"name": "Lite Bookmarks",
 	"description" : "Chrome extension that gets bookmarks from Google Bookmarks. Labels included. Simple.",
-	"version": "2.17",
+	"version": "2.18",
 	"manifest_version": 2,
 	"background": { "page": "background.htm" },
 	"content_security_policy": "script-src 'self' https://www.google.com; object-src 'self'",
@@ -16,6 +16,7 @@
 	},
 	"permissions": [
 	    "tabs",
-	    "http://www.google.com/bookmarks/"
+	    "http://www.google.com/bookmarks/",
+		"https://www.google.com/bookmarks/"
 	]
 }
