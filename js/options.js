@@ -1,3 +1,4 @@
+var currentPage = "options";
 $(document).ready(function () {
 	$("#showTotalBookmarks").attr("checked", localStorage.showTotalBookmarks == 1);
 	$("#showLabels").attr("checked", localStorage.showLabels == 1);
