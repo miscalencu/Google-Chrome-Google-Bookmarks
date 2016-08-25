@@ -95,8 +95,8 @@ function SyncBookmarks(callback) {
                         console.log("Folders removing is done!");
                         SyncBookmark(0, currentFolder, function () {
                             console.log("[1] Bookmarks sync is done!");
+                            localStorage.lastSyncDate = new Date();
                             if (typeof (callback) == "function") {
-                                localStorage.lastSyncDate = new Date();
                                 callback();
                             }
                         });
@@ -105,18 +105,18 @@ function SyncBookmarks(callback) {
                     console.log("No need for folders removing!");
                     SyncBookmark(0, currentFolder, function () {
                         console.log("[2] Bookmarks sync is done!");
+                        localStorage.lastSyncDate = new Date();
                         if (typeof (callback) == "function") {
-                            localStorage.lastSyncDate = new Date();
                             callback();
                         }
                     });
                 }
             });
         } else {
-            return SyncBookmark(0, currentFolder, function () {
+            SyncBookmark(0, currentFolder, function () {
                 console.log("[3] Bookmarks sync is done!");
+                localStorage.lastSyncDate = new Date();
                 if (typeof (callback) == "function") {
-                    localStorage.lastSyncDate = new Date();
                     callback();
                 }
             });
@@ -248,22 +248,29 @@ function SyncBookmarkLink(parentId, bookmark, subfolders, callback) {
 
     if (subfolder == "ROOT") {
         chrome.bookmarks.getChildren(parentId, function (children) {
-            // decide the possition assuming all existing are alphabetically ordered
-            var index = -1;
-            for (var i = 0; i < children.length; i++) {
-                if (children[i].title > title.trim()) {
-                    index = i;
-                    break;
+
+            var existing = $.grep($(children), function (item) { return (item.title == title) && (item.url == bookmark.url); });
+            if (existing.length == 0) {
+                // decide the possition assuming all existing are alphabetically ordered
+                var index = -1;
+                for (var i = 0; i < children.length; i++) {
+                    if (children[i].title > title.trim()) {
+                        index = i;
+                        break;
+                    }
                 }
-            }
 
-            if (index == -1)
-                index = children.length;
+                if (index == -1)
+                    index = children.length;
 
-            chrome.bookmarks.create({ 'title': title, 'url': bookmark.url, 'parentId': parentId, 'index': index }, function () {
-                console.log("Link '" + bookmark.url + "' for '" + subfolder + "' done ...");
+                chrome.bookmarks.create({ 'title': title, 'url': bookmark.url, 'parentId': parentId, 'index': index }, function () {
+                    console.log("Link '" + bookmark.url + "' for '" + subfolder + "' done ...");
+                    SyncBookmarkLink(parentId, bookmark, subfolders.slice(1), callback);
+                });
+            } else {
+                console.log("Skip adding link '" + bookmark.url + "' to folder '" + subfolder + "' ...");
                 SyncBookmarkLink(parentId, bookmark, subfolders.slice(1), callback);
-            });
+            }
         });
     }
     else {
@@ -275,23 +282,30 @@ function SyncBookmarkLink(parentId, bookmark, subfolders, callback) {
             }
             else {
                 var _parent = results[0];
+                var existing = $.grep($(_parent.children), function (item) { return (item.title == title) && (item.url == bookmark.url); });
+                if (existing.length == 0) {
 
-                // decide the possition assuming all existing are alphabetically ordered
-                var index = -1;
-                for (var i = 0; i < _parent.children.length; i++) {
-                    if (_parent.children[i].title > title) {
-                        index = i;
-                        break;
+                    // decide the possition assuming all existing are alphabetically ordered
+                    var index = -1;
+                    for (var i = 0; i < _parent.children.length; i++) {
+                        if (_parent.children[i].title > title) {
+                            index = i;
+                            break;
+                        }
                     }
+
+                    if (index == -1)
+                        index = _parent.children.length;
+
+                    chrome.bookmarks.create({ 'title': title, 'url': bookmark.url, 'parentId': _parent.id, 'index': index }, function () {
+                        console.log("Link '" + bookmark.url + "' for '" + subfolder + "' done ...");
+                        SyncBookmarkLink(parentId, bookmark, subfolders.slice(1), callback);
+                    });
                 }
-
-                if (index == -1)
-                    index = _parent.children.length;
-
-                chrome.bookmarks.create({ 'title': title, 'url': bookmark.url, 'parentId': _parent.id, 'index': index }, function () {
-                    console.log("Link '" + bookmark.url + "' for '" + subfolder + "' done ...");
+                else {
+                    console.log("Skip adding link '" + bookmark.url + "' to folder '" + subfolder + "' ...");
                     SyncBookmarkLink(parentId, bookmark, subfolders.slice(1), callback);
-                });
+                }
             }
         });
     };
@@ -479,7 +493,12 @@ Storage.prototype.getObject = function (key) {
 
 // Format to local time from UTC
 function formatToLocalTimeDate(inDate) {
-	return dateFormat(inDate, "ddd, d mmmm yyyy, h:MM:ss TT");
+    if (isNaN(Date.parse(inDate))) {
+        return "N/A";
+    }
+    else {
+        return dateFormat(inDate, "ddd, d mmmm yyyy, h:MM:ss TT");
+    }
 }
 
 function Trim(str) {
