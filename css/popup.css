@@ -1,7 +1,6 @@
 ﻿body 
 	{
 	min-width:350px;
-	min-height: 380px;
 	overflow-x:hidden;
 	overflow-y:hidden;
 	background-color: white;
@@ -22,8 +21,8 @@ body, table tr td
 
 #bookmarks
 	{
-	height: 350px;
 	overflow: auto;
+    line-height: 18px;
 	}
 
 #bookmarks a:link, #bookmarks a:visited, #bookmarks a:active

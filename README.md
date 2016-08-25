@@ -1,29 +1,20 @@
-#Google Chrome - Lite Bookmarks
+#Google Chrome - Simple Google Bookmarks Sync
 
-Chrome extension that gets bookmarks from Google Bookmarks. Labels included. Simple.
+Chrome extension that syncs bookmarks from Google Bookmarks into one Chrome bookmarks folder. 
+It can be used one-time only for importing Google Bookmarks or as an extension to sync them periodically.
+Simple.
 
-Install from: https://chrome.google.com/extensions/detail/mpneoicaochhlckfkackiigepakdgapj
+Install from: https://chrome.google.com/extensions/detail/?
 
 **Features**
 
-Shows labels and bookmarks with no labels by default.  
-Search bookmarks as you type.  
-Favicon is displayed!  
-Ordered alphabetically  
-You can click on a label to display bookmarks.  
-You can click on a bookmark to open it.  
-You can click the "Add" link in order to add a new bookmark.  
-Link to "Google Bookmarks" link in order to go to Google Bookmarks homepage.  
+Import Google Bookmarks into Chrome Google bookmarks folder.
+Sync bookmarks periodically.
+Option to visit Google Bookmarks directly.
+Option to add a new bookmark in Google Bookmarks (and sync).
 
-Awards:
+This is not a Google extension. I am not affiliated in any way with Google. The extension in only using the Google Bookmarks excel export and Chrome Bookmarks API.
 
-![Softpedia](http://s1.softpedia-static.com/_img/sp100clean.png)
+**Lite Bookmarks**
 
-** Features to be implemented: **
-
-Pinned bookmarks and labels  
-Edit bookmark (using API)  
-Add bookmark (using API)  
-Stay tuned!  
-
-This is not a Google extension. I am not affiliated in any way with Google. The extension in only using the Google Bookmarks API.
+If you are looking for the old version, this is under the LiteBookmarks branch at https://github.com/miscalencu/Google-Chrome-Google-Bookmarks/tree/LiteBookmarks.

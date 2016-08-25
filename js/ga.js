@@ -4,7 +4,7 @@
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 $(document).ready(function () {
-    ga('create', 'UA-19663435-2', 'auto');
+    ga('create', 'UA-19663435-3', 'auto');
     ga('set', 'checkProtocolTask', function () { }); // Removes failing protocol check. @see: http://stackoverflow.com/a/22152353/1958200
     ga('send', 'pageview', (currentPage || 'unknown') + '.html');
 });

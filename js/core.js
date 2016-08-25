@@ -1,23 +1,40 @@
 var bookmarks = new Array();
-var lastReadDate = new Date();
-var currentLabel = "";
 var docXML;
 
-function setDefaultVariables() {
-	if (!localStorage.readTimeout)
-		localStorage.readTimeout = "10";
+var isExtension = (typeof chrome.browserAction !== "undefined");
+var debugEnabled = !('update_url' in chrome.runtime.getManifest());
 
-	if (!localStorage.lastQuery)
-		localStorage.lastQuery = "";
+if (!debugEnabled) {
+    console.log = function () { };
+}
+
+function setDefaultVariables() {
+    if (!localStorage.currentFolder)
+        localStorage.currentFolder = 0;
+
+    if (!localStorage.uniqueBookmarks)
+        localStorage.uniqueBookmarks = 1;
+
+	if (!localStorage.readTimeout)
+	    localStorage.readTimeout = 1440;
+
+	if (!localStorage.removeExisting)
+	    localStorage.removeExisting = 0;
+
+	if (!localStorage.prefixLabels)
+	    localStorage.prefixLabels = 0;
+
+	if (!localStorage.skipLabels)
+	    localStorage.skipLabels = 0;
 
 	if (!localStorage.showTotalBookmarks)
 		localStorage.showTotalBookmarks = 1;
-
-	if (!localStorage.showLabels)
-		localStorage.showLabels = 1;
 	
 	if (!localStorage.lastReadDate)
-		localStorage.lastReadDate = new Date();
+	    localStorage.lastReadDate = null;
+
+	if (!localStorage.lastSyncDate)
+	    localStorage.lastSyncDate = null;
 	
 	if (!localStorage.noLoggedIn)
 		localStorage.noLoggedIn = true;
@@ -35,8 +52,7 @@ function fillData(result) {
 			for (var i = 0; i < $nodes.length; i++)
 				bookmarks[i] = GetInfo($nodes[i]);
 
-			lastReadDate = new Date();
-
+			localStorage.lastReadDate = new Date();
 			setStorageData();
 		}
 	}
@@ -48,16 +64,240 @@ function fillData(result) {
 
 	switch (currentPage) {
 		case "popup":
-			ShowBookmarks("");
+			ShowPopupInfo();
 			break;
-		case "options":
+	    case "options":
+	        FillInBookmarksInfo();
 			break;
 		case "background":
-			setBackgroudTimeout();
 			break;
 	}
 }
-	
+
+function SyncBookmarks(callback) {
+    var currentFolder = localStorage.currentFolder;
+    if (currentFolder === "0") {
+        console.log("Your sync folder is not setup!");
+        return "Your sync folder is not setup!";
+    }
+
+    if (localStorage.noLoggedIn == "true") {
+        console.log("You are not logged in!");
+        return "You are not logged in!";
+    }
+
+    try {
+        // check if I need to remove first
+        if (localStorage.removeExisting == "1") {
+            chrome.bookmarks.getChildren(currentFolder, function (results) {
+                if (results.length > 0) {
+                    SyncRemoveExisting(results, function () {
+                        console.log("Folders removing is done!");
+                        SyncBookmark(0, currentFolder, function () {
+                            console.log("[1] Bookmarks sync is done!");
+                            if (typeof (callback) == "function") {
+                                localStorage.lastSyncDate = new Date();
+                                callback();
+                            }
+                        });
+                    });
+                } else {
+                    console.log("No need for folders removing!");
+                    SyncBookmark(0, currentFolder, function () {
+                        console.log("[2] Bookmarks sync is done!");
+                        if (typeof (callback) == "function") {
+                            localStorage.lastSyncDate = new Date();
+                            callback();
+                        }
+                    });
+                }
+            });
+        } else {
+            return SyncBookmark(0, currentFolder, function () {
+                console.log("[3] Bookmarks sync is done!");
+                if (typeof (callback) == "function") {
+                    localStorage.lastSyncDate = new Date();
+                    callback();
+                }
+            });
+        }
+    }
+    catch (err) {
+        console.log("Error: " + err.message);
+        return "Error: " + err.message;
+    }
+
+    return "OK";
+}
+
+function SyncRemoveExisting(children, callback) {
+    if (children.length == 0) {
+        if (typeof(callback) == "function") {
+            callback();
+        }
+        return;
+    }
+
+    var bookmark = children[0];
+
+    if (bookmark.url == null) {
+        console.log("Removing folder '" + bookmark.title + "' ...");
+        chrome.bookmarks.removeTree(bookmark.id, function () {
+            SyncRemoveExisting(children.slice(1), callback);
+        });
+    }
+    else {
+        console.log("Removing bookmark '" + bookmark.title + "' ...");
+        chrome.bookmarks.remove(bookmark.id, function () {
+            SyncRemoveExisting(children.slice(1), callback);
+        });
+    }
+}
+
+function SyncBookmark(lastIndex, currentFolder, callback) {
+    if (lastIndex > bookmarks.length - 1) {
+        if (typeof (callback) == "function") {
+            callback();
+        }
+        return;
+    }
+
+    console.log("Sync bookmark index " + lastIndex);
+    var bookmark = bookmarks[lastIndex];
+
+    // sync labels first
+    if (localStorage.skipLabels == "0" && bookmark.labels.length > 0) {
+
+        var labels = bookmark.labels;
+        if (localStorage.uniqueBookmarks) {
+            labels = labels.slice(0, 1);
+        }
+
+        SyncLabels(labels, currentFolder, function () {
+            console.log("Labels sync for '" + bookmark.url + "' is done...");
+            SyncBookmarkLink(currentFolder, bookmark, labels, function () {
+                console.log("Link sync for '" + bookmark.url + "' is done...");
+                SyncBookmark(lastIndex + 1, currentFolder, callback);
+            });
+        });
+    } else {
+        SyncBookmarkLink(currentFolder, bookmark, ["ROOT"], function () {
+            console.log("Link sync for '" + bookmark.url + "' is done...");
+            SyncBookmark(lastIndex + 1, currentFolder, callback);
+        });
+    }
+}
+
+function SyncLabels(labels, currentFolder, callback) {
+    if (labels.length == 0) {
+        if (typeof (callback) == "function") {
+            callback();
+        }
+        return;
+    }
+
+    var label = labels[0];
+
+    chrome.bookmarks.getChildren(currentFolder, function (children) {
+        var results = $.grep($(children), function (item) { return (item.title == label && item.url == null); });
+        if (results.length == 0) {
+            // non-existing folder
+
+            // decide the possition assuming all existing are alphabetically ordered
+            var index = -1;
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].title > label) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1)
+                index = children.length;
+
+            chrome.bookmarks.create({ 'title': label, 'parentId': currentFolder, 'index':index }, function () {
+                console.log("creating folder '" + label + "' done ...")
+                SyncLabels(labels.slice(1), currentFolder, callback);
+            });
+        }
+        else {
+            // existing folder
+            SyncLabels(labels.slice(1), currentFolder, callback);
+        }
+    });
+}
+
+function SyncBookmarkLink(parentId, bookmark, subfolders, callback) {
+    if (subfolders.length == 0) {
+        if (typeof (callback) == "function")
+        {
+            callback();
+        }
+        return;
+    }
+
+    var subfolder = subfolders[0];
+    var title = bookmark.title;
+
+    if (localStorage.prefixLabels == 1) {
+        title = " " + title;
+        for (var i = 0; i < bookmark.labels.length; i++) {
+            title = "[" + bookmark.labels[i] + "]" + title;
+        }
+    }
+
+    if (subfolder == "ROOT") {
+        chrome.bookmarks.getChildren(parentId, function (children) {
+            // decide the possition assuming all existing are alphabetically ordered
+            var index = -1;
+            for (var i = 0; i < children.length; i++) {
+                if (children[i].title > title.trim()) {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index == -1)
+                index = children.length;
+
+            chrome.bookmarks.create({ 'title': title, 'url': bookmark.url, 'parentId': parentId, 'index': index }, function () {
+                console.log("Link '" + bookmark.url + "' for '" + subfolder + "' done ...");
+                SyncBookmarkLink(parentId, bookmark, subfolders.slice(1), callback);
+            });
+        });
+    }
+    else {
+        chrome.bookmarks.getSubTree(parentId, function (tree) {
+            var results = $.grep($(tree[0].children), function (item) { return (item.title == subfolder) && (item.url == null); });
+            if (results.length == 0) {
+                // non-existing folder
+                console.log("Error: cannot find folder '" + subfolders[0] + "'!");
+            }
+            else {
+                var _parent = results[0];
+
+                // decide the possition assuming all existing are alphabetically ordered
+                var index = -1;
+                for (var i = 0; i < _parent.children.length; i++) {
+                    if (_parent.children[i].title > title) {
+                        index = i;
+                        break;
+                    }
+                }
+
+                if (index == -1)
+                    index = _parent.children.length;
+
+                chrome.bookmarks.create({ 'title': title, 'url': bookmark.url, 'parentId': _parent.id, 'index': index }, function () {
+                    console.log("Link '" + bookmark.url + "' for '" + subfolder + "' done ...");
+                    SyncBookmarkLink(parentId, bookmark, subfolders.slice(1), callback);
+                });
+            }
+        });
+    };
+
+    console.log("Sync link " + bookmark.url + " for parent " + parentId + " done ...");
+}
 	
 function GetBookmarks() {
 	bookmarks = new Array();
@@ -170,7 +410,7 @@ function updateBadge() {
 			chrome.browserAction.setBadgeText({ text: "" });
 		}
 
-		chrome.browserAction.setTitle({ title: "Total bookmarks: " + bookmarks.length + ".\nLast checked on: " + formatToLocalTimeDate(lastReadDate) });
+		chrome.browserAction.setTitle({ title: "Total bookmarks: " + bookmarks.length + ".\nLast read on: " + formatToLocalTimeDate(localStorage.lastReadDate) + ".\nLast sync on: " + formatToLocalTimeDate(localStorage.lastSyncDate) });
 		chrome.browserAction.setIcon({ path: "images/icon_on.png" });
 	}
 	else {
@@ -222,17 +462,11 @@ function fCallback(tab) {
 }
 
 function setStorageData() {
-	//localStorage.bookmarksData = bookmarks;
 	localStorage.setObject("bookmarksData", bookmarks);
-	localStorage.lastReadDate = lastReadDate;
-	localStorage.currentLabel = currentLabel;
 }
 
 function getStorageData() {
-	//bookmarks = localStorage.bookmarksData;
 	bookmarks = localStorage.getObject("bookmarksData");
-	lastReadDate = new Date(localStorage.lastReadDate);
-	currentLabel = localStorage.currentLabel;
 }
 
 Storage.prototype.setObject = function (key, value) {

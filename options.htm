@@ -1,59 +1,99 @@
 <html>
 	<head>
-		<title>Settings for the Lite Bookmarks extension</title>
+		<title>Settings for the Simple Google Bookmarks Sync extension</title>
+
+        <script type="text/javascript" src="js/jquery/jquery-3.0.0.min.js"></script>
+        <link rel="stylesheet" href="/bootstrap/3.3.2/css/bootstrap.min.css">
+        <script src="/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 		<link href="/css/options.css" media="screen" rel="stylesheet" type="text/css" />        
+        <link href="/font-awesome/css/font-awesome.min.css" media="screen" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="js/dateformat.js"></script>
+        <script type="text/javascript" src="js/core.js"></script>
 	</head>
 	<body>
-		<script type="text/javascript" src="js/jquery/jquery-3.0.0.min.js"></script>
-		<script type="text/javascript" src="js/core.js"></script>
-		
-		<img border="0" src="images/icon_64.png" alt="Lite Bookmarks for Chrome" title="Lite Bookmarks for Chrome" style="vertical-align:middle;" />
-		<span id="power">powered by</span>
-		<a href="http://code.google.com/" target="_blank"><img border="0" src="images/code_logo.png" alt="Google APIs" title="Google APIs" style="vertical-align:middle;" /></a>
+        <div class="container body-content">
+            <h1 class="page-header">Settings for Simple Google Bookmarks Sync for Chrome extension</h1>
+            <div class="jumbotron form-inline">
+                <div class="form-group">
+                    <label for="updateFolder">
+                        Your Google bookmarks:
+                    </label>
+                    <div id="bookmarksInfo" class="form-control-static"></div>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="updateFolder">
+                        <i class="fa fa-info-circle" title="Choose an existing folder from your browser's bookmarks or create a new one. You can create a new folder from your browser bookmarks manager or using the icon on the right." data-toggle="tooltip" style="font-size: 20px; padding-right: 10px;"></i>
+                        Folder:
+                    </label>
+                    <select name="updateFolder" id="updateFolder" class="form-control"></select>
+                    <i id="newFolder" class="fa fa-folder-open-o" title="Create new folder under this one!" data-toggle="tooltip" style="font-size: 20px; padding-left: 10px; cursor: pointer"></i>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="removeExisting">
+                        <i class="fa fa-info-circle" title="Select this is you want that existing bookmarks in this folder to ALWAYS be removed when in the SYNC process." data-toggle="tooltip" style="font-size: 20px; padding-right: 10px;"></i>
+                        Remove existing bookmarks:
+                    </label>
+                    <input type="checkbox" id="removeExisting" name="removeExisting" class="form-control" />
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="uniqueBookmarks">
+                        <i class="fa fa-info-circle" title="Google Bookmarks supports multiple labels. This cannot be reproduced in a folder structure. Select this is you want to add the link to the first label of the bookmark only. Leave it unchecked to add a folder for each label available and duplicate bookmarks if they have multiple labels." data-toggle="tooltip" style="font-size: 20px; padding-right: 10px;"></i>
+                        Unique bookmarks/First labels:
+                    </label>
+                    <input type="checkbox" id="uniqueBookmarks" name="uniqueBookmarks" class="form-control" />
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="prefixLabels">
+                        <i class="fa fa-info-circle" title="Google Bookmarks supports multiple labels. This cannot be reproduced in a folder structure. Select this is you want to add the labels as a prefix (Ex: '[Label1][Label2] bookmark name') to the bookmark name." data-toggle="tooltip" style="font-size: 20px; padding-right: 10px;"></i>
+                        Prefix labels:
+                    </label>
+                    <input type="checkbox" id="prefixLabels" name="prefixLabels" class="form-control" />
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="skipLabels">
+                        <i class="fa fa-info-circle" title="Select this is you want to skip creating folders for labels. You can use this combined with the 'Prefix labels' options above." data-toggle="tooltip" style="font-size: 20px; padding-right: 10px;"></i>
+                        Skip creating folders for labels:
+                    </label>
+                    <input type="checkbox" id="skipLabels" name="skipLabels" class="form-control" />
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="updateTimeout">Background update timeout</label>
+                    <select name="updateTimeout" id="updateTimeout" class="form-control">
+                        <option value="60">1 hour</option>
+                        <option value="120">2 hours</option>
+                        <option value="240">4 hours</option>
+                        <option value="360">6 hours</option>
+                        <option value="720">12 hours</option>
+                        <option value="1440">24 hours</option>
+                    </select>
+                </div>
+                <br />
+                <div class="form-group">
+                    <label for="showTotalBookmarks">Show total bookmarks in badge</label>
+                    <input type="checkbox" id="showTotalBookmarks" name="showTotalBookmarks" class="form-control" />
+                </div>
+                <br /><br />
 
-		<h1>Settings for Lite Bookmarks for Chrome extension</h1>
-		<br />
+                <button class="btn btn-danger" id="btnSync">
+                    <i class="fa fa-refresh"></i>
+                    Sync bookmarks now
+                </button>
+            </div>
 
-		<table class="box">
-			<tr>
-				<th>Background update timeout</th>
-				<td>
-					<select name="updateTimeout" id="updateTimeout">
-						<option value="1">1 minute</option>
-						<option value="5">5 minutes</option>
-						<option value="10">10 minutes</option>
-						<option value="15">15 minutes</option>
-						<option value="30">30 minutes</option>
-						<option value="60">1 hour</option>
-					</select>
-				</td>
-			</tr>
-			<tr>
-				<th>Show total bookmarks in badge</th>
-				<td>
-					<input type="checkbox" id="showTotalBookmarks" name="showTotalBookmarks" />
-				</td>
-			</tr>
-			<tr>
-				<th>Show labels</th>
-				<td>
-					<input type="checkbox" id="showLabels" name="showLabels" />
-				</td>
-			</tr>
-		</table>
-
-		<br />
-		<h1>Stay tuned! Updates to follow soon:</h1>
-		Features to be implemented:
-		<ul>
-			<li>Display if current URL is bookmarked!</li>
-			<li>Edit bookmarks!</li>
-		</ul>
-		<br />
-		
-		<b>Please 
-		<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=APGKSVZZDQMJA"><img border="0" src="https://www.paypal.com/en_GB/i/btn/btn_donate_SM.gif" style="vertical-align:middle;" alt="PayPal - The safer, easier way to pay online." /></a> 
-		if you like my work!</b>
+            <h1 class="page-header" style="font-size: 24px">Support my work</h1>
+            
+            <b>
+                Please
+                <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=APGKSVZZDQMJA"><img border="0" src="https://www.paypal.com/en_GB/i/btn/btn_donate_SM.gif" style="vertical-align:middle;" alt="PayPal - The safer, easier way to pay online." /></a>
+                if you like my work!
+            </b>
+        </div>
 
         <script type="text/javascript" src="js/options.js"></script>
         <script type="text/javascript" src="js/ga.js"></script>

@@ -1,22 +1,23 @@
 {
-	"name": "Lite Bookmarks",
-	"description" : "Chrome extension that gets bookmarks from Google Bookmarks. Labels included. Simple.",
-	"version": "2.21",
+	"name": "Simple Google Bookmarks Sync",
+	"description" : "Chrome extension syncs Google Bookmarks with one Google Chrome bookmarks folder.",
+	"version": "0.10",
 	"manifest_version": 2,
 	"background": { "page": "background.htm" },
 	"content_security_policy": "script-src 'self' https://www.google-analytics.com https://www.google.com; object-src 'self'",
 	"options_page": "options.htm",
-	"browser_action": {
-		"default_icon": "images/icon_on.png",
-		"default_title": "Lite Bookmarks",
-		"default_popup": "popup.htm"
-	},
+  "browser_action": {
+    "default_icon": "images/icon_on.png",
+    "default_title": "Simple Google Bookmarks Sync",
+    "default_popup": "popup.htm"
+  },
 	"icons": {
 		"128": "images/icon_128.png"
 	},
-	"permissions": [
-	    "tabs",
-	    "http://www.google.com/bookmarks/",
-		  "https://www.google.com/bookmarks/"
-	]
+  "permissions": [
+    "tabs",
+    "bookmarks",
+    "http://www.google.com/bookmarks/",
+    "https://www.google.com/bookmarks/"
+  ]
 }
