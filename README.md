@@ -4,7 +4,7 @@ Chrome extension that syncs bookmarks from Google Bookmarks into one Chrome book
 It can be used one-time only for importing Google Bookmarks or as an extension to sync them periodically.
 Simple.
 
-Install from: https://chrome.google.com/extensions/detail/?
+Install from: https://chrome.google.com/webstore/detail/simple-google-bookmarks-s/aapfhogljejnbbgnfjchjgolfophodfi
 
 **Features**
 
