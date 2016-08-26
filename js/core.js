@@ -69,7 +69,8 @@ function fillData(result) {
 	    case "options":
 	        FillInBookmarksInfo();
 			break;
-		case "background":
+	    case "background":
+	        SyncBookmarks();
 			break;
 	}
 }
