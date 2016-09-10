@@ -29,7 +29,7 @@ $(document).ready(function () {
 	    }
 
 	    var folderName = prompt("Please type in folder name: ");
-	    if (folderName != "") {
+	    if (folderName != "" && folderName != undefined) {
 	        chrome.bookmarks.create({
 	            'parentId': parentID,
 	            'title': folderName
@@ -40,29 +40,39 @@ $(document).ready(function () {
 	    }
 	});
 
+	$("#btnSyncDelete").on("click", function () {
+	    if (confirm("WARNING! This will remove all the existing bookmarks in the selected folder!\nThere is no way to restore your deleted bookmarks if you proceed.\nAre you sure you want to continue?")) {
+	        SyncBookmarksAction($(this), true);
+	    }
+	});
+
 	$("#btnSync").on("click", function () {
-	    if ($(this).data("generating") === "1") {
-	        alert("Please wait for the data to finish syncing!");
-	        return;
-	    }
-
-	    var ret = SyncBookmarks(function () {
-	        FillChromeFolders($("#updateFolder"));
-	        $("#btnSync").data("generating", "0").find(".fa").removeClass("fa-spin");
-	        alert("Synchronization successful!");
-	    });
-
-	    if (ret != "OK") {
-	        alert(ret);
-	    } else {
-	        $("#btnSync").data("generating", "1").find(".fa").addClass("fa-spin");
-	    }
+	    SyncBookmarksAction($(this), false);
 	});
 
 	GetBookmarks();
 	
 	$('a.glyphicon, [data-toggle="tooltip"]').tooltip();
 });
+
+function SyncBookmarksAction(btn, withRemoveExisting) {
+    if ($("#btnSync").data("generating") === "1" || $("#btnSyncDelete").data("generating") === "1") {
+        alert("Please wait for the data to finish syncing!");
+        return;
+    }
+
+    var ret = SyncBookmarks(withRemoveExisting, function () {
+        FillChromeFolders($("#updateFolder"));
+        $(btn).data("generating", "0").find(".fa-refresh").removeClass("fa-spin");
+        alert("Synchronization successful!");
+    });
+
+    if (ret != "OK") {
+        alert(ret);
+    } else {
+        $(btn).data("generating", "1").find(".fa-refresh").addClass("fa-spin");
+    }
+}
 
 function FillInBookmarksInfo() {
 
@@ -82,7 +92,8 @@ function FillInBookmarksInfo() {
 
 function FillChromeFolders(selectObj) {
     // clear first
-    $(selectObj).find('option').remove();
+    currentFolders = [];
+    $($(selectObj)).html("");
 
     chrome.bookmarks.getTree(function (result) {
         $.each($(result).attr("children"), function (index) {

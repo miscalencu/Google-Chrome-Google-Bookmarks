@@ -70,12 +70,12 @@ function fillData(result) {
 	        FillInBookmarksInfo();
 			break;
 	    case "background":
-	        SyncBookmarks();
+	        SyncBookmarks(false);
 			break;
 	}
 }
 
-function SyncBookmarks(callback) {
+function SyncBookmarks(withRemoveExisting, callback) {
     var currentFolder = localStorage.currentFolder;
     if (currentFolder === "0") {
         console.log("Your sync folder is not setup!");
@@ -87,9 +87,11 @@ function SyncBookmarks(callback) {
         return "You are not logged in!";
     }
 
+    //withRemoveExisting == localStorage.removeExisting;
+
     try {
         // check if I need to remove first
-        if (localStorage.removeExisting == "1") {
+        if (withRemoveExisting) {
             chrome.bookmarks.getChildren(currentFolder, function (results) {
                 if (results.length > 0) {
                     SyncRemoveExisting(results, function () {
