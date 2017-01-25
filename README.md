@@ -2,8 +2,6 @@
 
 Chrome extension that gets bookmarks from Google Bookmarks. Labels included. Simple.
 
-Install from: https://chrome.google.com/extensions/detail/mpneoicaochhlckfkackiigepakdgapj
-
 **Features**
 
 Shows labels and bookmarks with no labels by default.  
